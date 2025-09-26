@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Task Smash</title>
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <h1>Welcome to My App</h1>
+        <p>This is a simple Flask application.</p>
+
+        {% if tasks | length < 1 %}
+        <h3>No tasks found!</h3>
+        {% else %}
+        <table>
+            <tr>
+                <th>Task</th>
+                <th>Added</th>
+                <th>Actions</th>
+            </tr>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.task }}</td>
+                <td>{{ task.created.strftime("%B %d, %Y") }}</td>
+                <td>
+                    <a href="/delete/{{ task.id }}">Delete</a>
+                    <a href="/update/{{ task.id }}">Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+        <form action="/" method="post">
+            <input type="text" name="task" placeholder="Enter a task" />
+            <input type="submit" value="Add Task" id="btn_add" />
+        </form>
+    </div>
+{% endblock %}
