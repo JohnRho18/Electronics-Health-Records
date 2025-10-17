@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Patient</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="form-body">
+    <div class="form-container">
+        <h2>Add New Patient Record</h2>
+        <form method="POST">
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group" style="display: flex; gap: 15px;">
+                <div style="flex: 1;">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" min="1" required>
+                </div>
+                <div style="flex: 1;">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="visit_date">Last Visit Date</label>
+                <input type="date" id="visit_date" name="visit_date" value="{{ today_date }}" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Add Patient</button>
+            <a href="{{ url_for('index') }}" class="btn-back">Cancel and Go Back</a>
+
+        </form>
+    </div>
+</body>
+</html>

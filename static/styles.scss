@@ -1,78 +1,459 @@
-$primary-color: #007bff;
-$primary-hover-color: #0056b3;
-$success-color: #28a745;
-$success-hover-color: #218838;
-$title-color: #333;
-$bg-color: #fff;
+// Variables
+$color-primary: #007bff;
+$color-secondary: #6c757d;
+$color-success: #28a745;
+$color-danger: #dc3545;
+$color-warning: #ffc107;
 
-body {
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: $bg-color;
+$color-bg-main: #f7f9fc;
+$color-bg-card: #ffffff;
+$color-bg-active: #e0f2ff;
+$color-bg-success-light: #e6ffed;
+$color-bg-primary-light: #e0f2ff;
+$color-bg-danger-light: #ffe6e6;
+$color-border-light: #f0f0f0;
+$color-border-medium: #ddd;
+
+// Mixins
+@mixin card-style {
+    background-color: $color-bg-card;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    overflow: hidden;
 }
 
-.content {
-  max-width: 800px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: $bg-color;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+// Base Styles
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    background-color: $color-bg-main;
+}
 
-  h1 {
-    color: $primary-hover-color;
-  }
+.card, .form-container {
+    @include card-style;
+}
 
-  h4 {
-    color: #666;
-  }
+// Layout Grid
+.container {
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+        "header header header"
+        "patients details prescriptions"
+        "calendar telehealth labs";
 
-  table {
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "header header"
+            "patients details"
+            "prescriptions prescriptions"
+            "calendar telehealth"
+            "labs labs";
+    }
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "header"
+            "patients"
+            "details"
+            "prescriptions"
+            "calendar"
+            "telehealth"
+            "labs";
+    }
+}
+
+// Header
+.header {
+    grid-area: header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: $color-bg-card;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: $color-primary;
+        display: flex;
+        align-items: center;
+        &::before {
+            content: "\271B";
+            color: $color-success;
+            margin-right: 8px;
+            font-size: 1.5em;
+            transform: rotate(45deg);
+            display: inline-block;
+        }
+    }
+
+    .user-actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-header {
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        padding: 8px 15px;
+        background-color: $color-success;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        margin-right: 15px;
+        &:hover {
+            background-color: darken($color-success, 10%);
+        }
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        background-color: $color-bg-active;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: $color-primary;
+        font-size: 1rem;
+    }
+}
+
+// General Buttons
+.btn-primary {
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: block;
     width: 100%;
+    padding: 10px;
+    background-color: $color-primary;
+    color: white;
+    border-radius: 8px;
     margin-top: 20px;
-    border-collapse: collapse;
-
-    th,td {
-      padding: 10px;
-      border: 1px solid #ccc;
-
-      th {
-        background-color: #f0f0f0;
-        color: #333;
-      }
+    &:hover {
+        background-color: darken($color-primary, 10%);
     }
+}
 
+.btn-primary-ghost {
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: $color-bg-active;
+    color: $color-primary;
+    border-radius: 8px;
+    margin-top: 10px;
+    text-align: center;
+    &:hover {
+        background-color: darken($color-bg-active, 5%);
+    }
+}
+
+.btn-primary-ghost-blue {
+    @extend .btn-primary-ghost;
+    margin-bottom: 20px;
+}
+
+.btn-elab {
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: auto;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin-top: 0;
+    background-color: $color-bg-main;
+    color: #333333;
+    border: 1px solid $color-border-medium;
+    border-radius: 6px;
+    &:hover {
+        background-color: darken($color-bg-main, 2%);
+    }
+}
+
+// Patient List
+.patients-list {
+    grid-area: patients;
     a {
-      display: inline-block;
-      padding: 5px 10px;
-      margin: 5px;
-      border-radius: 20px;
-      background-color: $primary-color;
-      color: #fff;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: $primary-hover-color;
-      }
+        text-decoration: none;
+        color: inherit;
     }
-  }
+    .patient-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-bottom: 8px;
 
-  input {
-      padding: 10px;
-      margin: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+        &:hover {
+            background-color: lighten($color-bg-active, 5%);
+        }
+        &.active {
+            background-color: $color-bg-active;
+            border-left: 4px solid $color-primary;
+            padding-left: 6px;
+        }
+
+        .patient-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #eee;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .patient-info {
+            strong {
+                display: block;
+                font-weight: 600;
+            }
+            small {
+                color: $color-secondary;
+            }
+        }
+    }
+}
+
+// Patient Details
+.patient-details {
+    grid-area: details;
+    text-align: center;
+
+    .detail-photo {
+        width: 120px;
+        height: 120px;
+        background-color: $color-bg-main;
+        border-radius: 50%;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: $color-primary;
+        border: 4px solid $color-bg-active;
+        // SVG Icon for user silhouette
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"%23007bff\"><path d=\"M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\"/></svg>");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 60%;
     }
 
-    #btn_add {
-      background-color: $success-color;
-      color: #fff;
-      cursor: pointer;
-      &:hover {
-        background-color: $success-hover-color;
-      }
+    .detail-info {
+        text-align: left;
+        margin-top: 20px;
+
+        .detail-info-item {
+            padding: 8px 0;
+            border-bottom: 1px solid $color-border-light;
+            font-size: 0.9rem;
+            &:last-child {
+                border-bottom: none;
+            }
+            strong {
+                float: right;
+                font-weight: 500;
+                color: #333333;
+            }
+        }
+    }
+}
+
+// Prescriptions
+.prescriptions {
+    grid-area: prescriptions;
+
+    .prescription-item {
+        background-color: $color-bg-active;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        strong {
+            display: block;
+            color: $color-primary;
+            margin-bottom: 5px;
+        }
+
+        small {
+            color: $color-secondary;
+            line-height: 1.4;
+            display: block;
+        }
+    }
+}
+
+// Calendar
+.calendar-card {
+    grid-area: calendar;
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .day-header {
+        font-weight: bold;
+        padding: 5px 0;
+        color: $color-secondary;
+    }
+
+    .day-cell {
+        padding: 10px 5px;
+        margin: 2px;
+        border-radius: 50%;
+        cursor: pointer;
+        &:hover {
+            background-color: lighten($color-bg-active, 5%);
+        }
+        &.today {
+            background-color: $color-primary;
+            color: white;
+        }
+    }
+}
+
+// Telehealth & Labs
+.telehealth {
+    grid-area: telehealth;
+}
+
+.labs {
+    grid-area: labs;
+}
+
+.appointment-item, .lab-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid $color-border-light;
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .appointment-info strong {
+        display: block;
+    }
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-scheduled {
+    background-color: $color-bg-success-light;
+    color: $color-success;
+}
+
+.status-needs-submission {
+    background-color: lighten($color-warning, 35%);
+    color: $color-warning;
+}
+
+// Forms
+.form-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+
+    h2 {
+        color: $color-primary;
+        border-bottom: 2px solid $color-bg-active;
+        padding-bottom: 10px;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+}
+
+.form-group {
+    margin-bottom: 15px;
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333333;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+    }
+}
+
+.btn-submit {
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: $color-success;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-top: 20px;
+    &:hover {
+        background-color: darken($color-success, 10%);
+    }
+}
+
+.btn-back {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: $color-secondary;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+    &:hover {
+        background-color: darken($color-secondary, 5%);
     }
 }
