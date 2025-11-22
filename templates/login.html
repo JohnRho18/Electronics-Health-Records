@@ -9,9 +9,10 @@
 <body class="auth-body">
     <div class="auth-container">
 
-        <div class="app-title">Electronic Health Records</div>
-
-        <h2>LOGIN</h2>
+        <div class="login-avatar-container">
+            <div class="login-avatar"></div>
+            <h2>LOGIN</h2>
+        </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -24,7 +25,8 @@
         {% endwith %}
 
         <form method="POST" action="{{ url_for('login') }}">
-            <div class="input-group no-icon">
+            <div class="input-group">
+                <span class="icon">👤</span>
                 <input type="text" name="username" placeholder="Username" required>
             </div>
 
@@ -39,6 +41,10 @@
             </div>
 
             <button type="submit" class="btn-auth">LOGIN</button>
+
+            <div class="auth-forgot-link">
+                <a href="#">Forgot Username / Password?</a>
+            </div>
         </form>
 
         <div class="auth-link">

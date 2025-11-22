@@ -8,8 +8,7 @@
 </head>
 <body class="auth-body">
     <div class="auth-container">
-
-        <h2>SIGN UP</h2>
+        <div class="app-title">SIGN UP</div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -22,9 +21,24 @@
         {% endwith %}
 
         <form method="POST" action="{{ url_for('signup') }}">
+
+            <div class="input-group">
+                <span class="icon">👥</span>
+                <select name="role" required>
+                    <option value="" disabled selected>Select Role</option>
+                    <option value="doctor">Admin/Doctor</option>
+                    <option value="patient">Patient</option>
+                </select>
+            </div>
+
             <div class="input-group">
                 <span class="icon">👤</span>
                 <input type="text" name="username" placeholder="Username" required>
+            </div>
+
+            <div class="input-group">
+                <span class="icon">✉️</span>
+                <input type="email" name="email" placeholder="E-mail" required>
             </div>
 
             <div class="input-group">
@@ -35,14 +49,6 @@
             <div class="input-group">
                 <span class="icon">🔒</span>
                 <input type="password" name="confirm_password" placeholder="Confirm Password" required>
-            </div>
-
-            <div class="input-group">
-                <span class="icon">👥</span>
-                <select name="role" required>
-                    <option value="doctor">Admin/Doctor</option>
-                    <option value="patient">Patient</option>
-                </select>
             </div>
 
             <button type="submit" class="btn-auth">CREATE ACCOUNT</button>

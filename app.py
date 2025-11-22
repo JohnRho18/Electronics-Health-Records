@@ -124,24 +124,29 @@ def signup():
         return redirect(url_for('index'))
 
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        role = request.form.get('role', 'doctor')
+        role = request.form.get('role')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
         avatar_base64 = ''
 
         if password != confirm_password:
             flash('Passwords must match', 'error')
             return redirect(url_for('signup'))
 
-        if User.query.filter_by(username=username).first() is not None:
+        user_exists = User.query.filter_by(username=username).first()
+        if user_exists:
             flash('Username already exists', 'error')
             return redirect(url_for('signup'))
 
-        user = User(username=username, avatar_base64=avatar_base64, role=role)
-        user.set_password(password)
+        if not role:
+            flash('Please select a role.', 'error')
+            return redirect(url_for('signup'))
 
-        db.session.add(user)
+        new_user = User(username=username, avatar_base64=avatar_base64, role=role)
+        new_user.set_password(password)
+
+        db.session.add(new_user)
         db.session.commit()
 
         flash('Account created successfully! Please log in.', 'success')
@@ -367,6 +372,4 @@ def delete_prescription(rx_id):
 
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
