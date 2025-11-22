@@ -60,6 +60,7 @@
         {% endif %}
         {% endwith %}
 
+
         <form method="POST" action="{{ url_for('add_prescription', patient_id=patient.id) }}">
             <div class="form-group">
                 <label for="medication">Medication Name</label>

@@ -360,6 +360,7 @@ def delete_prescription(rx_id):
     prescription = Prescription.query.get_or_404(rx_id)
     patient_id = prescription.patient_id
 
+
     try:
         db.session.delete(prescription)
         db.session.commit()
