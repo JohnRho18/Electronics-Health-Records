@@ -1,343 +1,108 @@
-.card, .form-container {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    padding: 20px;
-    overflow: hidden;
-}
-
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f9;
     margin: 0;
-    background-color: #f7f9fc;
+    padding: 0;
 }
 
+/* --- Dashboard Layout --- */
 .container {
-    max-width: 1400px;
-    margin: 20px auto;
-    padding: 20px;
     display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 320px 1fr 1fr;
+    grid-template-rows: auto auto auto;
     grid-template-areas:
         "header header header"
-        "patients details prescriptions"
+        "list details prescriptions"
         "calendar telehealth labs";
+    gap: 20px;
+    padding: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
-@media (max-width: 1024px) {
-    .container {
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas:
-            "header header"
-            "patients details"
-            "prescriptions prescriptions"
-            "calendar telehealth"
-            "labs labs";
-    }
-}
-
-@media (max-width: 600px) {
-    .container {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "header"
-            "patients"
-            "details"
-            "prescriptions"
-            "calendar"
-            "telehealth"
-            "labs";
-    }
-}
-
+/* --- Header --- */
 .header {
     grid-area: header;
+    background-color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.header .logo {
+.logo {
     font-size: 1.8rem;
-    font-weight: 700;
-    color: #007bff;
-    display: flex;
-    align-items: center;
-}
-
-.header .logo::before {
-    content: "\271B";
-    color: #28a745;
-    margin-right: 8px;
-    font-size: 1.5em;
-    transform: rotate(45deg);
-    display: inline-block;
-}
-
-.header .user-actions {
-    display: flex;
-    align-items: center;
-}
-
-.header .btn-header {
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    padding: 8px 15px;
-    background-color: #28a745;
-    color: white;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 500;
-    margin-right: 15px;
-}
-
-.header .btn-header:hover {
-    background-color: #1e7e34;
-}
-
-.header .user-avatar {
-    width: 40px;
-    height: 40px;
-    background-color: #e0f2ff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-weight: bold;
     color: #007bff;
-    font-size: 1rem;
 }
 
-.btn-primary {
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 8px;
-    margin-top: 20px;
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.btn-primary:hover {
-    background-color: #0069d9;
-}
-
-.btn-primary-ghost {
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #e0f2ff;
-    color: #007bff;
-    border-radius: 8px;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.btn-primary-ghost:hover {
-    background-color: #cce9ff;
-}
-
-.btn-primary-ghost-blue {
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #e0f2ff;
-    color: #007bff;
-    border-radius: 8px;
-    margin-top: 10px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.btn-primary-ghost-blue:hover {
-    background-color: #cce9ff;
-}
-
-.btn-elab {
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    width: auto;
+.user-role-display {
+    display: flex;
+    align-items: center;
     padding: 5px 10px;
-    font-size: 0.8rem;
-    margin-top: 0;
-    background-color: #f8f9fa;
-    color: #333333;
-    border: 1px solid #ddd;
     border-radius: 6px;
-}
-
-.btn-elab:hover {
-    background-color: #e9ecef;
-}
-
-.patients-list {
-    grid-area: patients;
-}
-
-.patients-list a {
-    text-decoration: none;
-    color: inherit;
-}
-
-.patients-list .patient-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-bottom: 8px;
-}
-
-.patients-list .patient-item:hover {
-    background-color: #f0f8ff;
-}
-
-.patients-list .patient-item.active {
     background-color: #e0f2ff;
-    border-left: 4px solid #007bff;
-    padding-left: 6px;
+    color: #007bff;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
-.patients-list .patient-item .patient-avatar {
-    width: 40px;
-    height: 40px;
-    background-color: #eee;
-    border-radius: 50%;
-    margin-right: 15px;
+.user-role-display svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    fill: #007bff;
+}
+
+.btn-header {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-header:hover {
+    background-color: #218838;
+}
+
+/* --- General Card Styling --- */
+.card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    color: #555;
+    flex-direction: column;
 }
 
-.patients-list .patient-item .patient-info strong {
-    display: block;
-    font-weight: 600;
-}
-
-.patients-list .patient-item .patient-info small {
-    color: #6c757d;
+/* --- Grid Area Assignments --- */
+.patients-list {
+    grid-area: list;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 .patient-details {
     grid-area: details;
-    text-align: center;
-}
-
-.patient-details .detail-photo {
-    width: 120px;
-    height: 120px;
-    background-color: #f8f9fa;
-    border-radius: 50%;
-    margin: 0 auto 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: #007bff;
-    border: 4px solid #e0f2ff;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"#007bff\"><path d=\"M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\"/></svg>");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 60%;
-}
-
-.patient-details .detail-info {
-    text-align: left;
-    margin-top: 20px;
-}
-
-.patient-details .detail-info .detail-info-item {
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f0f0;
-    font-size: 0.9rem;
-}
-
-.patient-details .detail-info .detail-info-item:last-child {
-    border-bottom: none;
-}
-
-.patient-details .detail-info .detail-info-item strong {
-    float: right;
-    font-weight: 500;
-    color: #333333;
 }
 
 .prescriptions {
     grid-area: prescriptions;
 }
 
-.prescriptions .prescription-item {
-    background-color: #e0f2ff;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.prescriptions .prescription-item strong {
-    display: block;
-    color: #007bff;
-    margin-bottom: 5px;
-}
-
-.prescriptions .prescription-item small {
-    color: #6c757d;
-    line-height: 1.4;
-    display: block;
-}
-
 .calendar-card {
     grid-area: calendar;
-}
-
-.calendar-card .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    font-size: 0.9rem;
-}
-
-.calendar-card .day-header {
-    font-weight: bold;
-    padding: 5px 0;
-    color: #6c757d;
-}
-
-.calendar-card .day-cell {
-    padding: 10px 5px;
-    margin: 2px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.calendar-card .day-cell:hover {
-    background-color: #f0f8ff;
-}
-
-.calendar-card .day-cell.today {
-    background-color: #007bff;
-    color: white;
 }
 
 .telehealth {
@@ -348,112 +113,396 @@ body {
     grid-area: labs;
 }
 
-.appointment-item, .lab-item {
+/* --- Patient List Items --- */
+.patient-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.patient-item:hover {
+    background-color: #f0f8ff;
+}
+
+.patient-item.active {
+    background-color: #e6f3ff;
+    border-left: 5px solid #007bff;
+    padding-left: 5px;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+.patient-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #ced4da;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.patient-info strong {
+    display: block;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.patient-info small {
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+/* --- Patient Details --- */
+.detail-photo {
+    width: 100px;
+    height: 100px;
+    background-color: #e0f2ff;
+    border: 3px solid #007bff;
+    border-radius: 50%;
+    margin: 0 auto 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23007bff"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 70%;
+}
+
+.patient-details h3 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.patient-details small {
+    text-align: center;
+    display: block !important;
+    margin-bottom: 20px;
+}
+
+.detail-info {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+/* --- Buttons --- */
+.btn-primary {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s;
+    margin-bottom: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-primary-ghost {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+}
+
+.btn-primary-ghost:hover {
+    background-color: #e0f2ff;
+}
+
+.btn-primary-ghost-blue {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #e0f2ff;
+    color: #007bff;
+    border: 1px solid #cce9ff;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    margin-bottom: 15px;
+    transition: background-color 0.2s;
+}
+
+.btn-primary-ghost-blue:hover {
+    background-color: #cce9ff;
+}
+
+.btn-elab {
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    border: 1px solid;
+    cursor: pointer;
+    background: none;
+}
+
+/* --- Items (Rx, Appt, Labs) --- */
+.prescription-item, .appointment-item, .lab-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #f0f0f0;
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #007bff;
 }
 
-.appointment-item:last-child, .lab-item:last-child {
-    border-bottom: none;
+.appointment-item {
+    border-left-color: #ffc107;
 }
 
-.appointment-info strong {
+.lab-item {
+    border-left-color: #dc3545;
+}
+
+.prescription-item strong, .appointment-item strong, .lab-item strong {
     display: block;
+    font-size: 1rem;
+}
+
+.prescription-item small, .appointment-item small, .lab-item small {
+    display: block;
+    font-size: 0.85rem;
+    color: #6c757d;
 }
 
 .status-badge {
     padding: 5px 10px;
     border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .status-scheduled {
-    background-color: #e6ffed;
-    color: #28a745;
+    background-color: #fff3cd;
+    color: #856404;
 }
 
 .status-needs-submission {
-    background-color: #fff3e0;
-    color: #ffc107;
+    background-color: #f8d7da;
+    color: #721c24;
 }
 
-.form-body {
+/* --- Calendar Styling --- */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.day-header {
+    font-weight: bold;
+    color: #007bff;
+    padding: 5px;
+}
+
+.day-cell {
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    font-size: 0.9rem;
+}
+
+.empty-cell {
+    background-color: transparent !important;
+}
+
+.day-cell.today {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "header header"
+            "list details"
+            "prescriptions telehealth"
+            "calendar labs";
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "header"
+            "list"
+            "details"
+            "prescriptions"
+            "calendar"
+            "telehealth"
+            "labs";
+    }
+}
+
+/* =========================================
+   Authentication Pages (Blue Theme)
+   ========================================= */
+
+.auth-body {
+    font-family: Arial, sans-serif;
+    background-color: #64b5f6; /* Light Blue background */
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
+    margin: 0;
 }
 
-.form-container {
-    width: 100%;
-    max-width: 450px;
+.auth-container {
+    background-color: rgba(255, 255, 255, 0.2); /* Glassmorphism effect */
     padding: 40px;
+    border-radius: 15px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.form-container h2 {
-    color: #007bff;
-    border-bottom: 2px solid #e0f2ff;
-    padding-bottom: 10px;
-    margin-top: 0;
+.auth-container h2 {
+    color: #fff;
+    margin-bottom: 30px;
+    font-size: 2em;
+    letter-spacing: 2px;
+    font-weight: 300;
+}
+
+.app-title {
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.input-group {
+    position: relative;
     margin-bottom: 20px;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
-    color: #333333;
-}
-
-.form-group input, .form-group select, .form-group textarea {
+/* General Input Styling */
+.input-group input,
+.input-group select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
+    padding: 15px 15px 15px 50px; /* Default padding for icons */
+    border: none;
+    border-radius: 8px;
     box-sizing: border-box;
-    transition: border-color 0.2s;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
 }
 
-.btn-submit {
+/* Specific Padding for inputs without icons (like Login Username) */
+.no-icon input {
+    padding-left: 15px !important;
+}
+
+.input-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364b5f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+}
+
+.input-group .icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64b5f6;
+    font-size: 18px;
+    z-index: 10;
+}
+
+.checkbox-group {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 14px;
+}
+
+.checkbox-group input {
+    margin-right: 8px;
+    width: auto;
+}
+
+.btn-auth {
+    width: 100%;
+    padding: 12px;
+    background-color: #2196f3;
+    color: white;
     border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s;
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background-color: #28a745;
-    color: white;
-    border-radius: 8px;
-    font-size: 1rem;
-    margin-top: 20px;
-}
-
-.btn-submit:hover {
-    background-color: #1e7e34;
-}
-
-.btn-back {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    text-align: center;
-    text-decoration: none;
+    font-size: 16px;
     margin-top: 10px;
+    transition: background-color 0.3s;
+    font-weight: bold;
 }
 
-.btn-back:hover {
-    background-color: #5a6268;
+.btn-auth:hover {
+    background-color: #1976d2;
+}
+
+.auth-link {
+    margin-top: 25px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.auth-link a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+.flash-message {
+    background-color: #ffdddd;
+    color: #d8000c;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: left;
+    font-size: 0.9em;
 }

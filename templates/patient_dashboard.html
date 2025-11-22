@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .patient-portal-body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+        .portal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .portal-header h1 {
+            color: #007bff;
+            margin: 0;
+        }
+        .section-header {
+            color: #495057;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        .list-item {
+            background-color: #e9f7ff;
+            border: 1px solid #cce9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .lab-item-portal {
+            background-color: #fff3e0;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .list-item strong, .lab-item-portal strong {
+            display: block;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+        .lab-item-portal strong {
+            color: #ffc107;
+        }
+        .list-item small, .lab-item-portal small {
+            display: block;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        .empty-state {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+            color: #6c757d;
+        }
+        .logout-btn {
+            padding: 10px 15px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body class="patient-portal-body">
+
+    <div class="container">
+        <div class="portal-header">
+            <h1>Patient Portal</h1>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div style="padding: 10px; margin-bottom: 20px; border-radius: 5px; background-color: {% if category == 'error' %}#ffdddd{% else %}#ddffdd{% endif %}; color: {% if category == 'error' %}#d8000c{% else %}#00a800{% endif %};">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% if patient %}
+            <h2>Welcome, {{ patient.name }}!</h2>
+            <p>Your Patient ID: **{{ patient.id }}**</p>
+
+            <h3 class="section-header">Prescriptions</h3>
+            {% if prescriptions %}
+                {% for rx in prescriptions %}
+                <div class="list-item">
+                    <strong>{{ rx.medication }} ({{ rx.dosage }})</strong>
+                    <small>Instructions: {{ rx.instructions }}</small>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">No active prescriptions found.</div>
+            {% endif %}
+
+            <h3 class="section-header">Pending Lab Orders</h3>
+            {% if lab_orders %}
+                {% for lab in lab_orders %}
+                <div class="lab-item-portal">
+                    <strong>Order Type: {{ lab.order_type }}</strong>
+                    <small>Status: **{{ lab.status }}**</small>
+                    <small>Ordered By: {{ lab.ordered_by }}</small>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">No pending lab orders.</div>
+            {% endif %}
+
+            <h3 class="section-header">Diagnosis/Notes</h3>
+            <div class="empty-state">
+                Your medical diagnosis and clinical notes would appear here once recorded by your doctor.
+            </div>
+
+        {% else %}
+            <h2>Welcome, {{ current_user.username|capitalize }}!</h2>
+            <div class="empty-state">
+                Your account is currently active, but no patient record has been linked to this username. Please contact your administrator.
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

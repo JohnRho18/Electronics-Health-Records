@@ -10,15 +10,21 @@
 
     <div class="container">
         <div class="header">
-            <div class="logo">EHR</div>
+            <div class="logo">Electronic Health Records</div>
 
             <div class="user-actions">
-                <a href="{{ url_for('add_patient') }}" class="btn-header">
+                <div class="user-role-display">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#007bff">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    <span>{{ current_user.role|capitalize }}</span>
+                </div>
+                <a href="{{ url_for('add_patient') }}" class="btn-header" style="margin-left: 10px;">
                     + Add Patient
                 </a>
-                <div class="user-avatar">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='#007bff'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>" style="width: 24px; height: 24px;"/>
-                </div>
+                <a href="{{ url_for('logout') }}" class="btn-header" style="background-color: #dc3545; margin-left: 10px;">
+                    Logout
+                </a>
             </div>
         </div>
 
@@ -42,11 +48,12 @@
 
         <div class="card patient-details">
             {% if selected_patient %}
-                <div class="detail-photo" title="{{ selected_patient.name }}"></div>
-                <h3 style="margin-bottom: 0;">{{ selected_patient.name }} ({{ selected_patient.age }} y/o)</h3>
-                <small style="color: #6c757d; display: block;">Gender: {{ selected_patient.gender }} | Visit: {{ selected_patient.visit_date.strftime('%b %d, %Y') }}</small>
-
-                <div class="detail-info" style="margin-top: 30px;">
+                <div style="text-align: center;">
+                    <div class="detail-photo" title="{{ selected_patient.name }}"></div>
+                    <h3 style="margin-bottom: 0;">{{ selected_patient.name }} ({{ selected_patient.age }} y/o)</h3>
+                    <small style="color: #6c757d;">Gender: {{ selected_patient.gender }} | Visit: {{ selected_patient.visit_date.strftime('%b %d, %Y') }}</small>
+                </div>
+                <div class="detail-info" style="margin-top: 10px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px;">
                         <strong style="font-size: 1.1rem;">Visit History</strong>
                         <div style="font-size: 0.9rem; color: #007bff; border: 1px solid #ddd; padding: 5px 10px; border-radius: 6px;">Last Year</div>
@@ -56,8 +63,8 @@
 
                     <button class="btn-primary" style="margin-top: 30px;">Download record</button>
 
-                    <form method="POST" action="{{ url_for('delete_patient', patient_id=selected_patient.id) }}" style="margin-top: 10px;" onsubmit="return confirm('WARNING: Are you sure you want to delete {{ selected_patient.name }} and ALL their records? This cannot be undone.');">
-                        <button type="submit" class="btn-primary" style="background-color: #dc3545; margin-top: 10px;">
+                    <form method="POST" action="{{ url_for('delete_patient', patient_id=selected_patient.id) }}" onsubmit="return confirm('WARNING: Are you sure you want to delete {{ selected_patient.name }} and ALL their records? This cannot be undone.');">
+                        <button type="submit" class="btn-primary" style="background-color: #dc3545;">
                             Delete Patient Record
                         </button>
                     </form>
@@ -117,34 +124,34 @@
         <div class="card telehealth">
             <h2>Telehealth</h2>
             <button class="btn-primary-ghost-blue">Virtual Appointment</button>
-            {% if telehealth_appointments %}
-                {% for appt in telehealth_appointments %}
+            {% if selected_patient and appointments %}
+                {% for appt in appointments %}
                 <div class="appointment-item">
                     <div class="appointment-info">
-                        <strong>{{ appt.name }}</strong>
-                        <small>{{ appt.time }} | {{ appt.detail }}</small>
+                        <strong>{{ selected_patient.name }}</strong>
+                        <small>{{ appt.appointment_time }} | {{ appt.provider_detail }}</small>
                     </div>
                     <span class="status-badge status-scheduled">{{ appt.status }}</span>
                 </div>
                 {% endfor %}
             {% else %}
-                <p style="color: #6c757d; font-size: 0.9rem;">No scheduled telehealth appointments.</p>
+                <p style="color: #6c757d; font-size: 0.9rem;">No scheduled telehealth appointments for this patient.</p>
             {% endif %}
         </div>
 
         <div class="card labs">
             <h2>Electronic Labs</h2>
-            {% if lab_orders %}
-                {% for lab in lab_orders %}
+            {% if all_pending_labs %}
+                {% for lab in all_pending_labs %}
                 <div class="lab-item">
                     <div class="appointment-info">
-                        <strong style="color: #007bff;">{{ lab.patient }}</strong>
-                        <small>Order: {{ lab.order }}</small>
+                        <strong style="color: #007bff;">{{ lab.patient.name }}</strong>
+                        <small>Order: {{ lab.order_type }}</small>
                         <small>Ordered by: {{ lab.ordered_by }}</small>
                     </div>
                     <div style="display: flex; flex-direction: column; align-items: flex-end;">
                         <span class="status-badge status-needs-submission" style="margin-bottom: 5px;">{{ lab.status }}</span>
-                        <button class="btn-elab">Create eLab</button>
+                        <button class="btn-elab" style="background-color: #e0f2ff; color: #007bff; border-color: #cce9ff;">Create eLab</button>
                     </div>
                 </div>
                 {% endfor %}

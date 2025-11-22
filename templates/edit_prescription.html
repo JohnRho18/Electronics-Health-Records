@@ -3,32 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Prescription - {{ patient.name }}</title>
+    <title>Edit Prescription</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .btn-cancel {
+            background-color: #6c757d;
+        }
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+    </style>
 </head>
-<body class="form-body">
+<body>
     <div class="form-container">
         <h2>Edit Prescription for {{ patient.name }}</h2>
-        <form method="POST">
 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message" style="background-color: {% if category == 'error' %}#ffdddd{% else %}#ddffdd{% endif %}; color: {% if category == 'error' %}#d8000c{% else %}#00a800{% endif %}; margin-bottom: 20px;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('edit_prescription', rx_id=prescription.id) }}">
             <div class="form-group">
                 <label for="medication">Medication Name</label>
                 <input type="text" id="medication" name="medication" value="{{ prescription.medication }}" required>
             </div>
 
             <div class="form-group">
-                <label for="dosage">Dosage / Strength</label>
-                <input type="text" id="dosage" name="dosage" value="{{ prescription.dosage }}" required>
+                <label for="dosage">Dosage</label>
+                <input type="text" id="dosage" name="dosage" value="{{ prescription.dosage or '' }}" placeholder="e.g., 500mg, 1 tablet" required>
             </div>
 
             <div class="form-group">
-                <label for="instructions">Instructions (SIG)</label>
-                <textarea id="instructions" name="instructions" rows="4">{{ prescription.instructions }}</textarea>
+                <label for="instructions">Instructions</label>
+                <textarea id="instructions" name="instructions" rows="4" placeholder="e.g., Take twice daily with food">{{ prescription.instructions or '' }}</textarea>
             </div>
 
-            <button type="submit" class="btn-submit">Save Changes</button>
-            <a href="{{ url_for('dashboard', patient_id=patient.id) }}" class="btn-back">Cancel and Go Back</a>
-
+            <div class="form-actions">
+                <a href="{{ url_for('dashboard', patient_id=patient.id) }}" class="btn-primary btn-cancel">Cancel</a>
+                <button type="submit" class="btn-primary" style="background-color: #ffc107;">Save Changes</button>
+            </div>
         </form>
     </div>
 </body>
